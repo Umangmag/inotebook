@@ -12,10 +12,11 @@ const app = express();
 // Define the port number for the server to listen on
 const port = 3000;
 
-// Define a route for the root URL ('/') and specify the response
-app.get('/', (req, res) => {
-  res.send('Hello, World!'); // Send 'Hello, World!' as the response
-});
+// Available Routes
+
+app.use('/api/auth', require('./routes/auth.js'))
+app.use('/api/notes', require('./routes/notes.js')) 
+ 
 
 // Start the server and have it listen on the defined port
 app.listen(port, () => {
