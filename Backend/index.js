@@ -12,6 +12,8 @@ const app = express();
 // Define the port number for the server to listen on
 const port = 3000;
 
+app.use(express.json())
+
 // Available Routes
 
 app.use('/api/auth', require('./routes/auth.js'))
