@@ -10,7 +10,7 @@ connectToMongo();
 const app = express();
 
 // Define the port number for the server to listen on
-const port = 3000;
+const port = 5000;
 
 app.use(express.json())
 
