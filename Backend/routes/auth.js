@@ -2,6 +2,10 @@ const express = require('express');
 const User = require('../models/User')
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs');
+const jwt=  require('jsonwebtoken');
+
+const JWT_SECRET= "umangisaboy";
 
 
 
@@ -35,14 +39,24 @@ router.post('/createuser',  //  1st endpoint
         if(user) {
             return res.status(400).json({error: "sorry a user with this mail exists"})
         }
+        const salt= await bcrypt.genSalt(10);
+        const secPass = await bcrypt.hash(req.body.password,salt);
         // creating new user or instance of user or making a document inside collection
         user= await User.create({
         name: req.body.name,
-        password: req.body.password,
+        password: secPass,
         email: req.body.email,
-      })
+      });
+          
+      const data= {
+        user: {
+            id: user.id
+        }
+      }
+      const authToken= jwt.sign(data,JWT_SECRET);
+      console.log(authToken);
 
-      res.json(user);
+      res.json({authToken});
     }
 
     catch(error) {
