@@ -79,6 +79,7 @@ router.post('/createuser',  //  1st endpoint
        ],  // 2nd  middlewares 
 
        async (req, res) => { // 3rd route handling function, if errors are present ,return bad request and error
+         let success= false
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
          return res.status(400).json({errors: errors.array()});
@@ -93,13 +94,15 @@ router.post('/createuser',  //  1st endpoint
              // check if email used for login exists
             let user= await User.findOne({email});
             if(!user) {
+                success=false
                 return res.status(400).json({error: "Enter a valid credential"});
             }
 
             const passwordcompare = await bcrypt.compare(password,user.password);
             if(!passwordcompare)
             {
-                return res.status(400).json({error: "Enter a valid credential"});
+                success=false
+                return res.status(400).json({success,error: "Enter a valid credential"});
             }    
               
           const data= {
@@ -108,7 +111,8 @@ router.post('/createuser',  //  1st endpoint
             }
           }
           const authToken= jwt.sign(data,JWT_SECRET);
-           res.json({authToken});
+          success = true;
+           res.json({success,authToken});
         }
     
         catch(error) {
