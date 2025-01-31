@@ -96,10 +96,10 @@ router.delete('/deletenote/:id', fetchuser, //:id is dynamic placeholder anythin
     // Find the note to be deleted and delete it
   
     let note = await Note.findById(req.params.id);
-    if(!note) {return res.status(404).send("Not Found")};
+    if(!note) {return res.status(404).json({error :"Not Found"})};
   
     if(note.user.toString()!==req.user.id){
-      return res.status(401).send("Not Allowed");
+      return res.status(401).json({error: "Not Allowed"});
     }
   
     note = await Note.findByIdAndDelete(req.params.id);
@@ -110,7 +110,7 @@ router.delete('/deletenote/:id', fetchuser, //:id is dynamic placeholder anythin
   }
       catch(error) {
         console.error(error.message);
-        res.status(500).send("Interal server errpr");
+        res.status(500).json({error: "Interal server error"});
     }
     
     
