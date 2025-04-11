@@ -6,9 +6,7 @@ connectToMongo();
 
 // Import Express.js module
 
-
-// Initialize the Express application
-const app = express();
+const app = express();  
 
 // Define the port number for the server to listen on
 const port = 5000;
